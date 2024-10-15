@@ -17,6 +17,7 @@ RUN apk add --no-cache make gcc musl-dev linux-headers git jq bash
 # We copy the go.mod/sum first, so the `go mod download` does not have to re-run if dependencies do not change.
 COPY ./go.mod /app/go.mod
 COPY ./go.sum /app/go.sum
+COPY ./7560-geth/ /app/7560-geth
 
 WORKDIR /app
 
