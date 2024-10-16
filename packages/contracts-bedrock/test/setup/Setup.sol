@@ -49,6 +49,7 @@ import { IETHLiquidity } from "src/L2/interfaces/IETHLiquidity.sol";
 import { IWETH } from "src/universal/interfaces/IWETH.sol";
 import { IGovernanceToken } from "src/governance/interfaces/IGovernanceToken.sol";
 import { ILegacyMessagePasser } from "src/legacy/interfaces/ILegacyMessagePasser.sol";
+import { NonceManager } from "src/L2/NonceManager.sol";
 
 /// @title Setup
 /// @dev This contact is responsible for setting up the contracts in state. It currently
@@ -106,6 +107,7 @@ contract Setup {
     IWETH weth = IWETH(payable(Predeploys.WETH));
     ISuperchainWETH superchainWeth = ISuperchainWETH(payable(Predeploys.SUPERCHAIN_WETH));
     IETHLiquidity ethLiquidity = IETHLiquidity(Predeploys.ETH_LIQUIDITY);
+    NonceManager nonceManager = NonceManager(Predeploys.NONCE_MANAGER);
 
     // TODO: Replace with OptimismSuperchainERC20Factory when updating pragmas
     IOptimismERC20Factory l2OptimismSuperchainERC20Factory =
@@ -231,6 +233,7 @@ contract Setup {
         labelPredeploy(Predeploys.ETH_LIQUIDITY);
         labelPredeploy(Predeploys.OPTIMISM_SUPERCHAIN_ERC20_FACTORY);
         labelPredeploy(Predeploys.OPTIMISM_SUPERCHAIN_ERC20_BEACON);
+        labelPredeploy(Predeploys.NONCE_MANAGER);
 
         // L2 Preinstalls
         labelPreinstall(Preinstalls.MultiCall3);
