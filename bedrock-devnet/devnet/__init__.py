@@ -28,7 +28,7 @@ FORKS = ["delta", "ecotone", "fjord", "granite"]
 
 # Global environment variables
 DEVNET_NO_BUILD = os.getenv('DEVNET_NO_BUILD') == "true"
-DEVNET_L2OO = os.getenv('DEVNET_L2OO') == "true"
+DEVNET_L2OO = True #os.getenv('DEVNET_L2OO') == "true"
 DEVNET_ALTDA = os.getenv('DEVNET_ALTDA') == "true"
 GENERIC_ALTDA = os.getenv('GENERIC_ALTDA') == "true"
 
@@ -165,7 +165,7 @@ def devnet_l2_allocs(paths):
     # For the previous forks, and the latest fork (default, thus empty prefix),
     # move the forge-dumps into place as .devnet allocs.
     for fork in FORKS:
-        input_path = pjoin(paths.contracts_bedrock_dir, f"state-dump-901-{fork}.json")
+        input_path = pjoin(paths.contracts_bedrock_dir, f"state-dump-11171168-{fork}.json")
         output_path = pjoin(paths.devnet_dir, f'allocs-l2-{fork}.json')
         shutil.move(src=input_path, dst=output_path)
         log.info("Generated L2 allocs: "+output_path)
@@ -237,14 +237,14 @@ def devnet_deploy(paths):
     addresses = read_json(paths.addresses_json_path)
 
     # Start the L2.
-    log.info('Bringing up L2.')
-    run_command(['docker', 'compose', 'up', '-d', 'l2'], cwd=paths.ops_bedrock_dir, env={
-        'PWD': paths.ops_bedrock_dir
-    })
+#     log.info('Bringing up L2.')
+#     run_command(['docker', 'compose', 'up', '-d', 'l2'], cwd=paths.ops_bedrock_dir, env={
+#         'PWD': paths.ops_bedrock_dir
+#     })
 
     # Wait for the L2 to be available.
-    wait_up(9545)
-    wait_for_rpc_server('127.0.0.1:9545')
+    wait_up(38545)
+    wait_for_rpc_server('127.0.0.1:38545')
 
     # Print out the addresses being used for easier debugging.
     l2_output_oracle = addresses['L2OutputOracleProxy']
@@ -285,7 +285,7 @@ def devnet_deploy(paths):
 
     # Bring up the rest of the services.
     log.info('Bringing up `op-node`, `op-proposer` and `op-batcher`.')
-    run_command(['docker', 'compose', 'up', '-d', 'op-node', 'op-proposer', 'op-batcher', 'artifact-server'], cwd=paths.ops_bedrock_dir, env=docker_env)
+    run_command(['docker', 'compose', 'up', '-d', 'op-node', 'op-proposer', 'op-batcher'], cwd=paths.ops_bedrock_dir, env=docker_env)
 
     # Optionally bring up op-challenger.
     if not DEVNET_L2OO:
@@ -378,7 +378,7 @@ def run_command(args, check=True, shell=False, cwd=None, env=None, timeout=None)
     )
 
 
-def wait_up(port, retries=10, wait_secs=1):
+def wait_up(port, retries=1000, wait_secs=1):
     for i in range(0, retries):
         log.info(f'Trying 127.0.0.1:{port}')
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

@@ -1,6 +1,6 @@
 {
   "l1ChainID": 900,
-  "l2ChainID": 901,
+  "l2ChainID": 11171168,
   "l2BlockTime": 2,
   "maxSequencerDrift": 300,
   "sequencerWindowSize": 200,
@@ -65,7 +65,7 @@
   "proofMaturityDelaySeconds": 12,
   "disputeGameFinalityDelaySeconds": 6,
   "respectedGameType": 254,
-  "useFaultProofs": true,
+  "useFaultProofs": false,
   "useAltDA": false,
   "daCommitmentType": "KeccakCommitment",
   "daChallengeWindow": 16,
