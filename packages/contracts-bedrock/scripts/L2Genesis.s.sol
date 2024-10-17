@@ -22,6 +22,7 @@ import { OptimismSuperchainERC20Beacon } from "src/L2/OptimismSuperchainERC20Bea
 import { OptimismMintableERC721Factory } from "src/universal/OptimismMintableERC721Factory.sol";
 import { FeeVault } from "src/universal/FeeVault.sol";
 import { GovernanceToken } from "src/governance/GovernanceToken.sol";
+import { NonceManager } from "src/L2/NonceManager.sol";
 
 // Libraries
 import { Predeploys } from "src/libraries/Predeploys.sol";
@@ -65,7 +66,7 @@ contract L2Genesis is Deployer {
     /// @notice Default Anvil dev accounts. Only funded if `cfg.fundDevAccounts == true`.
     /// Also known as "test test test test test test test test test test test junk" mnemonic accounts,
     /// on path "m/44'/60'/0'/0/i" (where i is the account index).
-    address[30] internal devAccounts = [
+    address[32] internal devAccounts = [
         0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266, // 0
         0x70997970C51812dc3A010C7d01b50e0d17dc79C8, // 1
         0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC, // 2
@@ -95,7 +96,9 @@ contract L2Genesis is Deployer {
         0x553BC17A05702530097c3677091C5BB47a3a7931, // 26
         0x87BdCE72c06C21cd96219BD8521bDF1F42C78b5e, // 27
         0x40Fc963A729c542424cD800349a7E4Ecc4896624, // 28
-        0x9DCCe783B6464611f38631e6C851bf441907c710 // 29
+        0x9DCCe783B6464611f38631e6C851bf441907c710, // 29
+        0x7560000000000000000000000000000000000000, // RIP-7560 BasicPaymaster
+        0x7560000000000000000000000000000000000001  // RIP-7560 BasicAccount
     ];
 
     /// @notice The address of the deployer account.
@@ -273,6 +276,7 @@ contract L2Genesis is Deployer {
         // 1B,1C,1D,1E,1F: not used.
         setSchemaRegistry(); // 20
         setEAS(); // 21
+        setNonceManager(); //24
         setGovernanceToken(); // 42: OP (not behind a proxy)
         if (cfg.useInterop()) {
             setCrossL2Inbox(); // 22
@@ -553,6 +557,11 @@ contract L2Genesis is Deployer {
         /// Reset so its not included state dump
         vm.etch(address(beacon), "");
         vm.resetNonce(address(beacon));
+    }
+    /// @notice This predeploy is following the safety invariant #1.
+    function setNonceManager() public {
+        console.log("Setting %s implementation at: %s", "NonceManager", Predeploys.NONCE_MANAGER);
+        vm.etch(Predeploys.NONCE_MANAGER, vm.getDeployedCode("NonceManager.sol:NonceManager"));
     }
 
     /// @notice Sets all the preinstalls.
