@@ -10,13 +10,14 @@
 ARG TARGET_BASE_IMAGE=alpine:3.18
 
 # We may be cross-building for another platform. Specify which platform we need as builder.
-FROM --platform=$BUILDPLATFORM golang:1.21.3-alpine3.18 AS builder
+FROM --platform=$BUILDPLATFORM golang:1.22-alpine AS builder
 
 RUN apk add --no-cache make gcc musl-dev linux-headers git jq bash
 
 # We copy the go.mod/sum first, so the `go mod download` does not have to re-run if dependencies do not change.
 COPY ./go.mod /app/go.mod
 COPY ./go.sum /app/go.sum
+COPY ./7560-geth/ /app/7560-geth
 
 WORKDIR /app
 

@@ -105,6 +105,9 @@ library Predeploys {
     /// @notice Arbitrary address of the OptimismSuperchainERC20 implementation contract.
     address internal constant OPTIMISM_SUPERCHAIN_ERC20 = 0xB9415c6cA93bdC545D4c5177512FCC22EFa38F28;
 
+    /// @notice Address of the NonceManager predeploy.
+    address internal constant NONCE_MANAGER = 0x4200000000000000000000000000000000000024;
+
     /// @notice Returns the name of the predeploy at the given address.
     function getName(address _addr) internal pure returns (string memory out_) {
         require(isPredeployNamespace(_addr), "Predeploys: address must be a predeploy");
@@ -135,12 +138,13 @@ library Predeploys {
         if (_addr == ETH_LIQUIDITY) return "ETHLiquidity";
         if (_addr == OPTIMISM_SUPERCHAIN_ERC20_FACTORY) return "OptimismSuperchainERC20Factory";
         if (_addr == OPTIMISM_SUPERCHAIN_ERC20_BEACON) return "OptimismSuperchainERC20Beacon";
+        if (_addr == NONCE_MANAGER) return "NonceManager";
         revert("Predeploys: unnamed predeploy");
     }
 
     /// @notice Returns true if the predeploy is not proxied.
     function notProxied(address _addr) internal pure returns (bool) {
-        return _addr == GOVERNANCE_TOKEN || _addr == WETH;
+        return _addr == GOVERNANCE_TOKEN || _addr == WETH || _addr == NONCE_MANAGER;
     }
 
     /// @notice Returns true if the address is a defined predeploy that is embedded into new OP-Stack chains.
@@ -154,7 +158,8 @@ library Predeploys {
             || (_useInterop && _addr == CROSS_L2_INBOX) || (_useInterop && _addr == L2_TO_L2_CROSS_DOMAIN_MESSENGER)
             || (_useInterop && _addr == SUPERCHAIN_WETH) || (_useInterop && _addr == ETH_LIQUIDITY)
             || (_useInterop && _addr == OPTIMISM_SUPERCHAIN_ERC20_FACTORY)
-            || (_useInterop && _addr == OPTIMISM_SUPERCHAIN_ERC20_BEACON);
+            || (_useInterop && _addr == OPTIMISM_SUPERCHAIN_ERC20_BEACON)
+            || _addr == NONCE_MANAGER;
     }
 
     function isPredeployNamespace(address _addr) internal pure returns (bool) {

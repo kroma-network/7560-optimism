@@ -60,6 +60,8 @@ func NewL2Genesis(config *DeployConfig, l1StartHeader *types.Header) (*core.Gene
 		ArrowGlacierBlock:             big.NewInt(0),
 		GrayGlacierBlock:              big.NewInt(0),
 		MergeNetsplitBlock:            big.NewInt(0),
+		RIP7560Block:                  big.NewInt(0),
+		RIP7712Block:                  big.NewInt(0),
 		TerminalTotalDifficulty:       big.NewInt(0),
 		TerminalTotalDifficultyPassed: true,
 		BedrockBlock:                  new(big.Int).SetUint64(uint64(config.L2GenesisBlockNumber)),
@@ -76,6 +78,9 @@ func NewL2Genesis(config *DeployConfig, l1StartHeader *types.Header) (*core.Gene
 			EIP1559Elasticity:        eip1559Elasticity,
 			EIP1559DenominatorCanyon: &eip1559DenomCanyon,
 		},
+		EntryPointAddress:     common.HexToAddress("0x0000000000000000000000000000000000007560"),
+		NonceManagerAddress:   common.HexToAddress("0x4200000000000000000000000000000000000024"),
+		DeployerCallerAddress: common.HexToAddress("0x00000000000000000000000000000000ffff7560"),
 	}
 
 	gasLimit := config.L2GenesisBlockGasLimit
