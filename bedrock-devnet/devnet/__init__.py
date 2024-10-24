@@ -165,7 +165,7 @@ def devnet_l2_allocs(paths):
     # For the previous forks, and the latest fork (default, thus empty prefix),
     # move the forge-dumps into place as .devnet allocs.
     for fork in FORKS:
-        input_path = pjoin(paths.contracts_bedrock_dir, f"state-dump-11171168-{fork}.json")
+        input_path = pjoin(paths.contracts_bedrock_dir, f"state-dump-1337-{fork}.json")
         output_path = pjoin(paths.devnet_dir, f'allocs-l2-{fork}.json')
         shutil.move(src=input_path, dst=output_path)
         log.info("Generated L2 allocs: "+output_path)
