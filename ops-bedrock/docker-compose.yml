@@ -199,7 +199,7 @@ services:
       OP_BATCHER_PPROF_ENABLED: "true"
       OP_BATCHER_METRICS_ENABLED: "true"
       OP_BATCHER_RPC_ENABLE_ADMIN: "true"
-      OP_BATCHER_BATCH_TYPE: 1
+      OP_BATCHER_BATCH_TYPE: 0
       OP_BATCHER_ALTDA_ENABLED: "${ALTDA_ENABLED}"
       OP_BATCHER_ALTDA_DA_SERVICE: "${ALTDA_SERVICE}"
       OP_BATCHER_ALTDA_DA_SERVER: "http://da-server:3100"
@@ -239,23 +239,23 @@ services:
 #      OP_CHALLENGER_HD_PATH: "m/44'/60'/0'/0/4"
 #      OP_CHALLENGER_NUM_CONFIRMATIONS: 1
 
-#  da-server:
-#    image: us-docker.pkg.dev/oplabs-tools-artifacts/images/da-server:devnet
-#    build:
-#      context: ../
-#      dockerfile: ops/docker/op-stack-go/Dockerfile
-#      target: da-server-target
-#    command: >
-#      da-server
-#      --file.path=/data
-#      --addr=0.0.0.0
-#      --port=3100
-#      --log.level=debug
-#      --generic-commitment="${ALTDA_GENERIC_DA}"
-#    ports:
-#      - "3100:3100"
-#    volumes:
-#      - "da_data:/data"
+  da-server:
+    image: us-docker.pkg.dev/oplabs-tools-artifacts/images/da-server:devnet
+    build:
+      context: ../
+      dockerfile: ops/docker/op-stack-go/Dockerfile
+      target: da-server-target
+    command: >
+      da-server
+      --file.path=/data
+      --addr=0.0.0.0
+      --port=3100
+      --log.level=debug
+      --generic-commitment="${ALTDA_GENERIC_DA}"
+    ports:
+      - "3100:3100"
+    volumes:
+      - "da_data:/data"
 #
 #  sentinel:
 #    image: quarry/sentinel # TODO(10141): We need a public image for this (sentinel is out of repo)
